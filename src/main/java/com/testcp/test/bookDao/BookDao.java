@@ -13,9 +13,8 @@ public class BookDao {
 	SqlSessionTemplate sqlSessionTemplate;
 
 	public int insert(Map<String, Object> map) {
-		return 0;
+		return this.sqlSessionTemplate.insert("book.insert", map);
 	}
-	
-	
-	
+
+
 }

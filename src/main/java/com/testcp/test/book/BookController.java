@@ -11,29 +11,27 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class BookController {
-	
+
 	@Autowired
 	BookService bookService;
-	
+
 	@RequestMapping(value="/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		ModelAndView mv = new ModelAndView();
-		mv.addObject("name","spring");
 		mv.setViewName("book/create");
 		return mv;
 	}
-	
+
 	@RequestMapping(value="/create", method = RequestMethod.POST)
 	public ModelAndView createPost(@RequestParam Map<String, Object> map) {
 		ModelAndView mv = new ModelAndView();
-		
+
 		String bookId = this.bookService.create(map);
 		if(bookId != null) {
 			mv.setViewName("redirect:/create");
 		}else {
 			mv.setViewName("redirect:/detail?bookId="+bookId);
 		}
-		
 		return mv;
 	}
 }
