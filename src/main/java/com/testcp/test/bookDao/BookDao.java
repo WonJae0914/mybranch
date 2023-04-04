@@ -13,8 +13,16 @@ public class BookDao {
 	SqlSessionTemplate sqlSessionTemplate;
 
 	public int insert(Map<String, Object> map) {
+		System.out.println("dao:"+map);
 		return this.sqlSessionTemplate.insert("book.insert", map);
 	}
 
+	public Map<String, Object> selectDetail(Map<String, Object> map){
+		return this.sqlSessionTemplate.selectOne("book.select_detail", map);
 
+	}
+
+	public int update(Map<String, Object> map) {
+		return this.sqlSessionTemplate.update("book.update", map);
+	}
 }
