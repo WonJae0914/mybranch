@@ -1,5 +1,6 @@
 package com.testcp.test.book;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,4 +37,14 @@ public class BookServiceImpl implements BookService {
 		return affectRowCount == 1;
 	}
 
+	@Override
+	public boolean delete(Map<String, Object> map) {
+		int affectRowCount = this.bookDao.delete(map);
+		return affectRowCount==1;
+	}
+
+	@Override
+	public List<Map<String, Object>> list(Map<String, Object> map) {
+		return this.bookDao.list(map);
+	}
 }

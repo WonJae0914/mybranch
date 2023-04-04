@@ -1,5 +1,6 @@
 package com.testcp.test.book;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +26,8 @@ public class BookController {
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public ModelAndView createPost(@RequestParam Map<String, Object> map) {
-		System.out.println(map);
 		ModelAndView mv = new ModelAndView();
 		String bookId = this.bookService.create(map);
-		System.out.println("bookdId : " + bookId);
 		if (bookId == null) {
 			mv.setViewName("redirect:/create");
 		} else {
@@ -39,13 +38,10 @@ public class BookController {
 
 	@RequestMapping(value = "/detail", method = RequestMethod.GET)
 	public ModelAndView detail(@RequestParam Map<String, Object> map) {
-		System.out.println("map : " + map);
 		Map<String, Object> detailMap = this.bookService.detail(map);
-		System.out.println("detailMap : " + detailMap);
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("data", detailMap);
 		String bookId = map.get("bookId").toString();
-		System.out.println("bookId : " + bookId);
 		mv.addObject("bookId", bookId);
 		mv.setViewName("/book/detail");
 		return mv;
@@ -75,10 +71,33 @@ public class BookController {
 		return mv;
 	}
 
-	@RequestMapping(value = "/delete/{bookId}", method = RequestMethod.DELETE)
-	public ModelAndView delete(){@PathVariable String )
-
+	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+	public ModelAndView delete(@RequestParam Map<String, Object> map){
+		System.out.println("delMap:"+map);
+		ModelAndView mv = new ModelAndView();
+		boolean delete = this.bookService.delete(map);
+		System.out.println("resultDel : " + delete);
+		if (delete){
+			mv.setViewName("redirect:/list");
+		} else{
+			String bookId = map.get("bookId").toString();
+			mv.setViewName("redirect:/detail?bookId="+bookId);
+		}
+		return mv;
 	}
+
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public ModelAndView list(@RequestParam Map<String, Object>map){
+		ModelAndView mv = new ModelAndView();
+		List<Map<String, Object>> list = this.bookService.list(map);
+		mv.addObject("data", list);
+		if (map.containsKey("keyword")){
+			mv.addObject("keyword",map.get("keyword"));
+		}
+		mv.setViewName("/book/list");
+		return mv;
+	}
+
 }
 
 
